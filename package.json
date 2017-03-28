@@ -6,6 +6,23 @@
     "url": "https://github.com/Jacob-PersonalSpace/MochaDemo.git",
     "type": "git"
   },
+  "scripts": {
+    "test": "mocha"
+  },
   "author": "Jacob Feng <fjh920605@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-preset-es2015": "^6.24.0",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "mochawesome": "^2.0.4",
+    "sinon": "^2.1.0"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.23.0",
+    "bluebird": "^3.5.0",
+    "mongoose": "^4.9.2",
+    "node-fetch": "^1.6.3"
+  }
 }
