@@ -1,0 +1,11 @@
+{
+  "name": "mochademo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/Jacob-PersonalSpace/MochaDemo.git",
+    "type": "git"
+  },
+  "author": "Jacob Feng <fjh920605@gmail.com>",
+  "license": "MIT"
+}
