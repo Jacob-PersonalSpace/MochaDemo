@@ -1,11 +1,12 @@
 import 'babel-polyfill';
+
 import getUser from '../src/dbCall.js';
 var sinon = require('sinon');
 var Promise = require('bluebird');
 var User = require('../App_Code/user.js');
 import { expect } from 'chai';
 
-describe('mock db测试', () => {
+describe('mock db test', () => {
     describe('case 1: user age is 20', () => {
         let userStub_Ture;
 
@@ -56,7 +57,7 @@ describe('mock db测试', () => {
         });
     });
 
-    describe('case 3: call db failed', () => {
+    describe('case 3: call db throw exception', () => {
         let userStub_Exception;
         let expectedError;
 
