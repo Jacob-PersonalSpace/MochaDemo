@@ -1,31 +1,15 @@
-var fetch = require('node-fetch');
+import 'isomorphic-fetch'
 
-var makeRequest = () => {
+var judgeAdult = () => {
     return fetch("http://httpbin.org/get", {
-        method: 'GET'
-    })
-        .then(function(response) {
-            return response.json();
+            method: 'GET',
+            mode: "cors"
         })
-        .catch(function(err) {
-            return err;
-        });
-    // return fetch('https://api.github.com/users/github',{
-    //         method: 'GET',
-    //         mode: 'cors',
-    //         body: JSON.stringify({ name: 'test' }),
-    //     })
-    //     .then((res) => {
-    //         console.log('1');
-    //         return res.json();
-    //     })
-    //     .then((data) => {
-    //         console.log('2');
-    //         return data;
-    //     })
-    //     .catch((err) => {
-    //         return err;
-    //     });
+        .then(res => res.json())
+        .then(user => {
+            return user.age > 18 ? true : false;
+        })
+        .catch(err => err);
 };
 
-module.exports = makeRequest;
+export default judgeAdult;

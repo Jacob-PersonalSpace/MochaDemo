@@ -1,52 +1,63 @@
 import 'babel-polyfill';
 
-var fetchMock = require('fetch-mock');
-var makeRequest = require('../src/fetchtest.js');
-var expect = require('chai').expect;
-import sinon, { restore } from 'sinon';
-import sinonStubPromise from 'sinon-stub-promise';
-sinonStubPromise(sinon);
+import fetchMock from 'fetch-mock';
+import judgeAdult from '../src/fetchtest.js';
+import { expect } from 'chai';
 
-describe('Ajax test', () => {
-    let stubFetch;
-
-    beforeEach(() => {
-        // stubFetch = sinon.stub(require('node-fetch'), 'fetch');
-        stubFetch = sinon.stub(window, 'fetch');
-    });
-
-    afterEach(() => {
-        sinon.restore(window.fetch);
-    });
-
-    it('mock get', (done) => {
-        stubFetch.returnsPromise().resolves({ hello: 'world' });
-
-        // return fetch('https://api.github.com')
-        //     .then(function(res) {
-        //     return res.json();
-        //     }).then(function(json) {
-        //     expect(json).to.be.an('object');
-        //     console.log(json);
-        //     });
-        // makeRequest().then((data) => {
-        //     console.log('haha');
-        // });
-        // fetchMock.get('*', { hello: 'world' });
-
-        makeRequest().then((data) => {
-            console.log('3');
-            console.log('got data', data);
-            // fetchMock.restore();
+describe('fetch test', () => {
+    describe('case 1: return age = 25', () => {
+        beforeEach(() => {
+            fetchMock.get('http://httpbin.org/get', { name: 'Jacob', age: 25 });
         });
 
-        // fetchMock.get('*', {hello: 'world'});
+        afterEach(() => {
+            fetchMock.restore();
+        });
 
-        // makeRequest().then(function(data) {
-        // console.log('got data', data);
-        // });
+        it('it should return true', () => {
+            return judgeAdult()
+                .then((data) => {
+                    expect(data).to.be.equal(true);
+                });
+        });
+    });
 
-        // // Unmock.
-        // fetchMock.restore();
+    describe('case 2: return age = 7', () => {
+        beforeEach(() => {
+            fetchMock.get('http://httpbin.org/get', { name: 'Jacob', age: 7 });
+        });
+
+        afterEach(() => {
+            fetchMock.restore();
+        });
+
+        it('it should return false', () => {
+            return judgeAdult()
+                .then((data) => {
+                    expect(data).to.be.equal(false);
+                });
+        });
+    });
+
+    describe('case 3: fetch error', () => {
+        let expectedError = new Error('oops');
+        let mockExceptionPromise = new Promise((resolve, reject) => {
+                return reject(expectedError);
+            });
+
+        beforeEach(() => {
+            fetchMock.get('http://httpbin.org/get', mockExceptionPromise);
+        });
+
+        afterEach(() => {
+            fetchMock.restore();
+        });
+
+        it('it should throws error', () => {
+            return judgeAdult()
+                .then(data => {
+                    expect(data.toString()).to.be.equal(expectedError.toString());
+                });
+        });
     });
 });
